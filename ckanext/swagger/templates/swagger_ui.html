@@ -11,7 +11,7 @@
     <div id="swagger-ui"></div>
     <script>
         const ui = SwaggerUIBundle({
-            url: "{{ h.url_for('swagger_controller.swagger_json') }}",
+            url: "{{ h.url_for('swagger.swagger_json') }}",
             dom_id: '#swagger-ui',
             presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
             layout: "StandaloneLayout"
