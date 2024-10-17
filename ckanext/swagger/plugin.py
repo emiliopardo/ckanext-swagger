@@ -1,9 +1,10 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, jsonify, current_app, render_template
 
 swagger_blueprint = Blueprint('swagger', __name__)
 
+# Ruta para servir el JSON de Swagger dinámicamente
 @swagger_blueprint.route('/swagger.json', methods=['GET'])
 def swagger_json():
     api_base_url = toolkit.config.get('ckan.site_url') + '/api/3'
@@ -11,8 +12,7 @@ def swagger_json():
     # Obtener las rutas activas de CKAN desde la aplicación Flask
     paths = {}
     for rule in current_app.url_map.iter_rules():
-        if rule.rule.startswith('/api'):  # Solo incluimos las rutas que empiezan por '/api'
-            # Construimos la entrada para Swagger en base a la ruta
+        if rule.rule.startswith('/api/3/action'):  # Solo incluimos las rutas que empiezan por '/api/3/action'
             path_data = {
                 "get": {
                     "description": f"Endpoint for {rule.endpoint}",
@@ -41,6 +41,12 @@ def swagger_json():
     }
 
     return jsonify(swagger_json_data)
+
+# Ruta para servir la interfaz Swagger UI a través del template
+@swagger_blueprint.route('/swagger', methods=['GET'])
+def swagger_ui():
+    # Renderizar el template que mostrará la interfaz de Swagger UI
+    return render_template('swagger_ui.html')
 
 # El plugin principal
 class SwaggerPlugin(plugins.SingletonPlugin):
