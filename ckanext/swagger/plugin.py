@@ -32,7 +32,7 @@ class SwaggerPlugin(plugins.SingletonPlugin):
         toolkit.add_resource('fanstatic',
             'swagger')
 
-class SwaggerController(p.toolkit.BaseController):
+class SwaggerController(plugins.toolkit.BaseController):
     def swagger_ui(self):
         return tk.render('swagger_ui.html')
 
