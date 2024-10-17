@@ -11,8 +11,14 @@ def swagger_json():
     
     # Obtener las rutas activas de CKAN desde la aplicación Flask
     paths = {}
+
+    print("Rutas registradas en current_app.url_map:")
     for rule in current_app.url_map.iter_rules():
-        if rule.rule.startswith('/api/3/action'):  # Solo incluimos las rutas que empiezan por '/api/3/action'
+        # Imprimir todas las rutas para depurar
+        print(rule.rule)
+
+        # Solo incluimos las rutas que empiezan por '/api/3/action'
+        if rule.rule.startswith('/api/3/action'):
             path_data = {
                 "get": {
                     "description": f"Endpoint for {rule.endpoint}",
