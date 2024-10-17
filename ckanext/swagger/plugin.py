@@ -6,7 +6,6 @@ from flask import jsonify
 class SwaggerPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IBlueprint)
-    plugins.implements(plugins.INavigationContributor)
 
     # IConfigurer
 
