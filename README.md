@@ -1,5 +1,3 @@
-[![Tests](https://github.com/Guadaltel S.A./ckanext-swagger/workflows/Tests/badge.svg?branch=main)](https://github.com/Guadaltel S.A./ckanext-swagger/actions)
-
 # ckanext-swagger
 
 **TODO:** Put a description of your extension here:  What does it do? What features does it have? Consider including some screenshots or embedding a video!
@@ -43,7 +41,7 @@ To install ckanext-swagger:
 
 2. Clone the source and install it on the virtualenv
 
-    git clone https://github.com/Guadaltel S.A./ckanext-swagger.git
+    git clone https://github.com/emiliopardo/ckanext-swagger.git
     cd ckanext-swagger
     pip install -e .
 	pip install -r requirements.txt
@@ -73,7 +71,7 @@ None at present
 To install ckanext-swagger for development, activate your CKAN virtualenv and
 do:
 
-    git clone https://github.com/Guadaltel S.A./ckanext-swagger.git
+    git clone https://github.com/emiliopardo/ckanext-swagger.git
     cd ckanext-swagger
     python setup.py develop
     pip install -r dev-requirements.txt
