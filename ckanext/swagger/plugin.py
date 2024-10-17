@@ -18,7 +18,7 @@ def swagger_json():
         print(rule.rule)
 
         # Solo incluimos las rutas que empiezan por '/api/3/action'
-        if rule.rule.startswith('/api/3/action'):
+        if rule.rule.startswith('/api/'):
             path_data = {
                 "get": {
                     "description": f"Endpoint for {rule.endpoint}",
