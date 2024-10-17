@@ -6,11 +6,26 @@
 
 {% block stylesheets %}
     {{ super() }}
+    <!-- Asegúrate de que la ruta al CSS de Swagger sea correcta -->
     <link href="{{ h.url_for_static('swagger-ui/dist/swagger-ui.css') }}" rel="stylesheet">
+    <style>
+        /* Agregar un estilo básico para el body en caso de que falte algún CSS */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* Asegurar que Swagger UI ocupe toda la pantalla */
+        #swagger-ui {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 {% endblock %}
 
 {% block scripts %}
     {{ super() }}
+    <!-- Asegúrate de que las rutas a los archivos JS de Swagger sean correctas -->
     <script src="{{ h.url_for_static('swagger-ui/dist/swagger-ui-bundle.js') }}"></script>
     <script src="{{ h.url_for_static('swagger-ui/dist/swagger-ui-standalone-preset.js') }}"></script>
 {% endblock %}
@@ -21,7 +36,7 @@
         window.onload = function() {
             // Configurar Swagger UI para consumir el archivo generado en /swagger.json
             const ui = SwaggerUIBundle({
-                url: "{{ h.url_for('swagger.swagger_json') }}",  <!-- Aquí cargamos el JSON dinámico -->
+                url: "{{ h.url_for('swagger.swagger_json') }}",  <!-- Cargar el JSON dinámico -->
                 dom_id: '#swagger-ui',
                 presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
                 layout: "StandaloneLayout"
