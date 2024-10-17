@@ -18,11 +18,15 @@
 {% block content %}
     <div id="swagger-ui"></div>
     <script>
-        const ui = SwaggerUIBundle({
-            url: "{{ h.url_for('swagger.swagger_json') }}",
-            dom_id: '#swagger-ui',
-            presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-            layout: "StandaloneLayout"
-        });
+        window.onload = function() {
+            // Configurar Swagger UI para consumir el archivo generado en /swagger.json
+            const ui = SwaggerUIBundle({
+                url: "{{ h.url_for('swagger.swagger_json') }}",
+                dom_id: '#swagger-ui',
+                presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+                layout: "StandaloneLayout"
+            });
+            window.ui = ui;
+        }
     </script>
 {% endblock %}
