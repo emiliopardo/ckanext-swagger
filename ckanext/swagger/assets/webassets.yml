@@ -1,0 +1,14 @@
+# swagger-js:
+#   filter: rjsmin
+#   output: ckanext-swagger/%(version)s-swagger.js
+#   contents:
+#     - js/swagger.js
+#   extra:
+#     preload:
+#       - base/main
+
+# swagger-css:
+#   filter: cssrewrite
+#   output: ckanext-swagger/%(version)s-swagger.css
+#   contents:
+#     - css/swagger.css

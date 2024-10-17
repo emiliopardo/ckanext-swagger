@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CKAN Swagger UI</title>
+    <link href="{{ h.url_for_static('swagger-ui/dist/swagger-ui.css') }}" rel="stylesheet">
+    <script src="{{ h.url_for_static('swagger-ui/dist/swagger-ui-bundle.js') }}"></script>
+    <script src="{{ h.url_for_static('swagger-ui/dist/swagger-ui-standalone-preset.js') }}"></script>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script>
+        const ui = SwaggerUIBundle({
+            url: "{{ h.url_for('swagger_controller.swagger_json') }}",
+            dom_id: '#swagger-ui',
+            presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+            layout: "StandaloneLayout"
+        });
+    </script>
+</body>
+</html>
