@@ -6,30 +6,16 @@
 
 {% block stylesheets %}
     {{ super() }}
-    <!-- Asegúrate de que la ruta al CSS de Swagger sea correcta -->
     <link href="{{ h.url_for_static('swagger-ui/dist/swagger-ui.css') }}" rel="stylesheet">
-    <style>
-        /* Agregar un estilo básico para el body en caso de que falte algún CSS */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        /* Asegurar que Swagger UI ocupe toda la pantalla */
-        #swagger-ui {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+    <p>Estilos personalizados de Swagger añadidos</p> <!-- Depuración -->
 {% endblock %}
 
 {% block scripts %}
     {{ super() }}
-    <!-- Asegúrate de que las rutas a los archivos JS de Swagger sean correctas -->
     <script src="{{ h.url_for_static('swagger-ui/dist/swagger-ui-bundle.js') }}"></script>
     <script src="{{ h.url_for_static('swagger-ui/dist/swagger-ui-standalone-preset.js') }}"></script>
+    <p>Scripts de Swagger añadidos</p> <!-- Depuración -->
 {% endblock %}
-
 {% block content %}
     <div id="swagger-ui"></div>
     <script>
