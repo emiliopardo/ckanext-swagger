@@ -1,6 +1,7 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from flask import Blueprint, jsonify, current_app, render_template
+import re  # Para trabajar con las rutas dinámicas
 
 swagger_blueprint = Blueprint('swagger', __name__)
 
@@ -13,15 +14,36 @@ def swagger_json():
     paths = {}
 
     print("Rutas registradas en current_app.url_map:")
+    flask_pattern = re.compile(r'<(?:[^:]+:)?([^>]+)>')  # Regex para capturar las variables de ruta tipo Flask
+
     for rule in current_app.url_map.iter_rules():
         # Imprimir todas las rutas para depurar
         print(rule.rule)
 
-        # Solo incluimos las rutas que empiezan por '/api/3/action'
+        # Solo incluimos las rutas que empiezan por '/api/'
         if rule.rule.startswith('/api/'):
+            # Transformar la ruta Flask (<int:ver>) a la sintaxis de Swagger ({ver})
+            new_path = flask_pattern.sub(r'{\1}', rule.rule)
+            
+            # Agregar parámetros si se detectan variables en la ruta
+            parameters = []
+            matches = flask_pattern.findall(rule.rule)
+            for match in matches:
+                parameters.append({
+                    "name": match,
+                    "in": "path",
+                    "required": True,
+                    "description": f"The {match} parameter",
+                    "schema": {
+                        "type": "string"  # O ajusta a 'integer' si lo necesitas
+                    }
+                })
+
+            # Definir los métodos y las respuestas para el endpoint
             path_data = {
                 "get": {
                     "description": f"Endpoint for {rule.endpoint}",
+                    "parameters": parameters if parameters else [],
                     "responses": {
                         "200": {
                             "description": "OK"
@@ -29,7 +51,9 @@ def swagger_json():
                     }
                 }
             }
-            paths[rule.rule] = path_data
+
+            # Asignar la nueva ruta (con parámetros) al diccionario de paths
+            paths[new_path] = path_data
 
     # Generar el archivo Swagger JSON de forma dinámica
     swagger_json_data = {
