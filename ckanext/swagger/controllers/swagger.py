@@ -1,28 +1,14 @@
-from flask import Blueprint, jsonify
-from flask_restx import Api
+from flask import jsonify, render_template
 from ckan.plugins import toolkit
 import os
 
-# Crear un blueprint para manejar las rutas de Swagger
-swagger_blueprint = Blueprint('swagger', __name__)
-
-# Instanciar Flask-Restx para manejar la documentación Swagger
-api = Api(swagger_blueprint, version='1.0', title='CKAN API Documentation',
-          description='Documentación automática de la API de CKAN y Datastore')
-
 class SwaggerController:
-    # Obtener todas las acciones de CKAN
-    @staticmethod
-    def get_ckan_actions():
-        """Obtiene todas las acciones registradas en CKAN."""
-        status = toolkit.get_action('status_show')({})
-        return status['action_summary']
 
     # Generar el archivo swagger.json dinámicamente
     @staticmethod
     def swagger_json():
         # Obtener las acciones de CKAN
-        actions = SwaggerController.get_ckan_actions()
+        actions = toolkit.get_action('status_show')({})['action_summary']
 
         # Crear la estructura Swagger
         paths = {}
@@ -73,6 +59,8 @@ class SwaggerController:
     # Servir el Swagger UI
     @staticmethod
     def swagger_ui():
+        # Asegurarse de que la ruta al archivo index.html sea correcta
         swagger_ui_path = os.path.join(os.path.dirname(__file__), '../public/swagger/index.html')
         with open(swagger_ui_path, 'r') as swagger_ui_file:
-            return swagger_ui_file.read()
+            swagger_ui_content = swagger_ui_file.read()
+        return swagger_ui_content

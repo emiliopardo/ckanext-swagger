@@ -1,12 +1,24 @@
-from ckan.plugins import SingletonPlugin, implements
-from ckan.plugins import IRoutes
+from ckan.plugins import toolkit, SingletonPlugin, implements
+from flask import Blueprint
+import ckan.plugins as p
 
 class CKANSwaggerPlugin(SingletonPlugin):
-    implements(IRoutes)
+    implements(p.IBlueprint)
 
-    def before_map(self, map):
-        # Registrar las rutas para Swagger UI y el swagger.json dinámico
-        map.connect('swagger_ui', '/swagger', controller='ckanext.swagger.controllers.swagger:SwaggerController', action='swagger_ui')
-        map.connect('swagger_json', '/swagger.json', controller='ckanext.swagger.controllers.swagger:SwaggerController', action='swagger_json')
-        
-        return map
+    def get_blueprint(self):
+        # Crear un blueprint de Flask para registrar las rutas
+        swagger_blueprint = Blueprint('swagger', __name__)
+
+        # Registrar la ruta para Swagger UI
+        @swagger_blueprint.route('/api/swagger')
+        def swagger_ui():
+            from ckanext.swagger.controllers.swagger import SwaggerController
+            return SwaggerController.swagger_ui()
+
+        # Registrar la ruta para el archivo swagger.json
+        @swagger_blueprint.route('/api/swagger.json')
+        def swagger_json():
+            from ckanext.swagger.controllers.swagger import SwaggerController
+            return SwaggerController.swagger_json()
+
+        return swagger_blueprint
