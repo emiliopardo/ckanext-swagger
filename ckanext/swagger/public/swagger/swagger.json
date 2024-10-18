@@ -1,0 +1,172 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "CKAN API",
+    "description": "Documentación de la API de CKAN 2.9.11 con todos los actions."
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/api/3/action/package_create": {
+      "post": {
+        "summary": "Crear un dataset",
+        "description": "Crea un nuevo dataset en CKAN.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos del dataset a crear.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "example": "nombre-del-dataset" },
+                "title": { "type": "string", "example": "Título del dataset" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dataset creado con éxito",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean" },
+                "result": { "type": "object" }
+              }
+            }
+          },
+          "400": {
+            "description": "Error en la solicitud"
+          }
+        }
+      }
+    },
+    "/api/3/action/package_list": {
+      "post": {
+        "summary": "Listar datasets",
+        "description": "Devuelve una lista de todos los datasets en CKAN.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de datasets",
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "400": {
+            "description": "Error en la solicitud"
+          }
+        }
+      }
+    },
+    "/api/3/action/package_show": {
+      "post": {
+        "summary": "Mostrar detalles de un dataset",
+        "description": "Muestra los detalles de un dataset específico.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "El ID o nombre del dataset.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string", "example": "nombre-del-dataset" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del dataset",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "title": { "type": "string" },
+                "notes": { "type": "string" }
+              }
+            }
+          },
+          "404": {
+            "description": "Dataset no encontrado"
+          }
+        }
+      }
+    },
+    "/api/3/action/organization_list": {
+      "post": {
+        "summary": "Listar organizaciones",
+        "description": "Devuelve una lista de todas las organizaciones en CKAN.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de organizaciones",
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "/api/3/action/group_list": {
+      "post": {
+        "summary": "Listar grupos",
+        "description": "Devuelve una lista de todos los grupos en CKAN.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de grupos",
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "/api/3/action/user_show": {
+      "post": {
+        "summary": "Mostrar detalles de un usuario",
+        "description": "Devuelve los detalles de un usuario específico.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "El ID o nombre del usuario.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string", "example": "nombre-del-usuario" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del usuario",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" },
+                "email": { "type": "string" }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,30 +1,37 @@
-from flask import jsonify, request  # Importar el objeto request para acceder a la solicitud actual
+from flask import Blueprint, jsonify, request, send_file
 from ckan.plugins import toolkit
+import os
+
+# Blueprint para swagger estático
+swagger_static_blueprint = Blueprint('swagger_static', __name__)
+
+# Blueprint para swagger dinámico
+swagger_dynamic_blueprint = Blueprint('swagger_dynamic', __name__)
 
 class SwaggerController:
+    # Ruta para servir el archivo swagger.json estático
+    @swagger_static_blueprint.route('/api/static/swagger.json')
+    def swagger_static():
+        # Ruta del archivo swagger.json estático
+        static_file_path = os.path.join(os.path.dirname(__file__), '../public/swagger/swagger.json')
+        return send_file(static_file_path)
 
-    # Generar el archivo swagger.json dinámicamente
-    @staticmethod
-    def swagger_json():
-        # Intentar obtener la lista de acciones de CKAN
-        actions = toolkit.get_actions()
-        for action_name, logic_function in actions.items():
-            print(f"Action: {action_name}, Function: {logic_function}")
+    # Generar el archivo swagger.json dinámico
+    @swagger_dynamic_blueprint.route('/api/dynamic/swagger.json')
+    def swagger_dynamic():
         try:
-            # Verificar si 'action_summary' existe en la respuesta de status_show
+            # Obtener todas las acciones registradas
             status = toolkit.get_action('status_show')({})
             actions = status.get('action_summary', None)
-            
-            # Si no existe 'action_summary', intentamos usar otra estrategia
             if actions is None:
-                # Obtener todas las acciones usando toolkit directamente
+                # Si no hay action_summary, obtenemos todas las acciones usando get_actions
                 actions = toolkit.get_actions()
         except KeyError:
             return jsonify({'error': 'No se pudo obtener la lista de acciones de CKAN'})
 
         # Obtener el host y esquema (http/https) de la solicitud actual
-        host_url = request.host  # Esto obtiene "localhost:5000" o el host que se esté utilizando
-        scheme = request.scheme  # Esto obtiene "http" o "https" según la solicitud
+        host_url = request.host
+        scheme = request.scheme
 
         # Crear la estructura Swagger
         paths = {}
@@ -63,9 +70,9 @@ class SwaggerController:
                 "title": "CKAN API",
                 "description": "Documentación dinámica de la API de CKAN."
             },
-            "host": host_url,  # Usar el host dinámico
+            "host": host_url,
             "basePath": "/",
-            "schemes": [scheme],  # Usar http o https dinámicamente según la solicitud
+            "schemes": [scheme],
             "paths": paths
         }
 
