@@ -23,12 +23,16 @@ class SwaggerController:
         try:
             # Obtener todas las acciones de CKAN desde ckan.logic.action.get
             actions = {}
+            context = {'user': 'admin'}  # Reemplaza 'admin' por un usuario con permisos
             for action_name in dir(action.get):
                 if not action_name.startswith("_"):  # Ignorar métodos privados
                     try:
-                        # Obtener la función de la acción
+                        # Obtener la función de la acción con autorización
                         action_function = toolkit.get_action(action_name)
+                        action_function(context, {})  # Intentar invocar la acción para verificar permisos
                         actions[action_name] = action_function
+                    except toolkit.NotAuthorized:
+                        continue  # Saltar las acciones que no tienen permiso
                     except toolkit.ObjectNotFound:
                         continue  # Saltar si la acción no está disponible
 
@@ -79,12 +83,10 @@ class SwaggerController:
                 "paths": paths
             }
 
-            # Retornar la especificación Swagger como JSON
             return jsonify(swagger_spec)
 
         except Exception as e:
-            return jsonify({"error": str(e)})
-    
+            return jsonify({"error": str(e)})    
 class SwaggerUIController:
     def show(self):
         """
