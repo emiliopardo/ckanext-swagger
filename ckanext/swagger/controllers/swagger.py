@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, send_file
+from flask import Blueprint, jsonify, request, send_file, render_template
 from ckan.plugins import toolkit
 import ckan.logic.action as action
 import os
@@ -84,3 +84,10 @@ class SwaggerController:
 
         except Exception as e:
             return jsonify({"error": str(e)})
+    
+class SwaggerUIController:
+    def show(self):
+        """
+        Renderizar el archivo index.html desde la carpeta de templates.
+        """
+        return render_template('swagger/index.html')

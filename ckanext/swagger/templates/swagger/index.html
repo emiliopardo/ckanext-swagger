@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swagger UI</title>
-    <link rel="stylesheet" type="text/css" href="swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="/public/swagger/swagger-ui.css" />
 </head>
 <body>
     <div id="swagger-ui"></div>
-    <script src="swagger-ui-bundle.js"></script>
+    <script src="/public/swagger/swagger-ui-bundle.js"></script>
     <script>
     const ui = SwaggerUIBundle({
-        url: "/api/3/action/swagger.json",  // Ruta para el swagger.json dinámico
+        url: "/api/static/swagger.json",  // Ruta para el swagger.json
         dom_id: '#swagger-ui',
         presets: [
             SwaggerUIBundle.presets.apis,
