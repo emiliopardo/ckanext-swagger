@@ -1,42 +1,24 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKAN Swagger UI</title>
-
-    <!-- Estilos de Swagger UI -->
-    <link href="/swagger-ui/dist/swagger-ui.css" rel="stylesheet">
-    <style>
-        /* Estilo para asegurar que Swagger UI ocupe toda la pantalla */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        #swagger-ui {
-            width: 100%;
-            height: 100vh;
-        }
-    </style>
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="swagger-ui.css" />
 </head>
 <body>
     <div id="swagger-ui"></div>
-
-    <!-- Scripts de Swagger UI -->
-    <script src="/swagger-ui/dist/swagger-ui-bundle.js"></script>
-    <script src="/swagger-ui/dist/swagger-ui-standalone-preset.js"></script>
+    <script src="swagger-ui-bundle.js"></script>
     <script>
-        window.onload = function() {
-            // Inicializar Swagger UI para cargar el archivo swagger.json generado por CKAN
-            const ui = SwaggerUIBundle({
-                url: "/swagger.json",  // Ruta del archivo swagger.json generado
-                dom_id: '#swagger-ui',
-                presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-                layout: "StandaloneLayout"
-            });
-            window.ui = ui;
-        };
+    const ui = SwaggerUIBundle({
+        url: "/api/3/action/swagger.json",  // Ruta para el swagger.json dinámico
+        dom_id: '#swagger-ui',
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout"
+    })
     </script>
 </body>
 </html>
