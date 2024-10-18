@@ -1,14 +1,27 @@
-from flask import jsonify, render_template
+from flask import jsonify, request  # Importar el objeto request para acceder a la solicitud actual
 from ckan.plugins import toolkit
-import os
 
 class SwaggerController:
 
     # Generar el archivo swagger.json dinámicamente
     @staticmethod
     def swagger_json():
-        # Obtener las acciones de CKAN
-        actions = toolkit.get_action('status_show')({})['action_summary']
+        # Intentar obtener la lista de acciones de CKAN
+        try:
+            # Verificar si 'action_summary' existe en la respuesta de status_show
+            status = toolkit.get_action('status_show')({})
+            actions = status.get('action_summary', None)
+            
+            # Si no existe 'action_summary', intentamos usar otra estrategia
+            if actions is None:
+                # Obtener todas las acciones usando toolkit directamente
+                actions = toolkit.get_actions()
+        except KeyError:
+            return jsonify({'error': 'No se pudo obtener la lista de acciones de CKAN'})
+
+        # Obtener el host y esquema (http/https) de la solicitud actual
+        host_url = request.host  # Esto obtiene "localhost:5000" o el host que se esté utilizando
+        scheme = request.scheme  # Esto obtiene "http" o "https" según la solicitud
 
         # Crear la estructura Swagger
         paths = {}
@@ -47,20 +60,11 @@ class SwaggerController:
                 "title": "CKAN API",
                 "description": "Documentación dinámica de la API de CKAN."
             },
-            "host": "localhost:5000",  # Cambiar al host de tu instancia de CKAN
+            "host": host_url,  # Usar el host dinámico
             "basePath": "/",
-            "schemes": ["http"],
+            "schemes": [scheme],  # Usar http o https dinámicamente según la solicitud
             "paths": paths
         }
 
         # Retornar la especificación Swagger como JSON
         return jsonify(swagger_spec)
-
-    # Servir el Swagger UI
-    @staticmethod
-    def swagger_ui():
-        # Asegurarse de que la ruta al archivo index.html sea correcta
-        swagger_ui_path = os.path.join(os.path.dirname(__file__), '../public/swagger/index.html')
-        with open(swagger_ui_path, 'r') as swagger_ui_file:
-            swagger_ui_content = swagger_ui_file.read()
-        return swagger_ui_content
