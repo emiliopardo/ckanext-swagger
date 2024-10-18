@@ -7,6 +7,9 @@ class SwaggerController:
     @staticmethod
     def swagger_json():
         # Intentar obtener la lista de acciones de CKAN
+        actions = toolkit.get_actions()
+        for action_name, logic_function in actions.items():
+            print(f"Action: {action_name}, Function: {logic_function}")
         try:
             # Verificar si 'action_summary' existe en la respuesta de status_show
             status = toolkit.get_action('status_show')({})
