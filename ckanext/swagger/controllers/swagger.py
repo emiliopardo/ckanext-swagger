@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, send_file
 from ckan.plugins import toolkit
+import ckan.logic.action as action
 import os
 
 # Blueprint para swagger estático
