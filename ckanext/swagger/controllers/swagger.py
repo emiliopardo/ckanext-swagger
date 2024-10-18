@@ -10,7 +10,6 @@ swagger_blueprint = Blueprint('swagger', __name__)
 api = Api(swagger_blueprint, version='1.0', title='CKAN API Documentation',
           description='Documentación automática de la API de CKAN y Datastore')
 
-# Controlador que servirá las páginas de Swagger UI y swagger.json
 class SwaggerController:
     # Obtener todas las acciones de CKAN
     @staticmethod
@@ -74,8 +73,6 @@ class SwaggerController:
     # Servir el Swagger UI
     @staticmethod
     def swagger_ui():
-        # Ruta hacia el archivo index.html de Swagger UI
         swagger_ui_path = os.path.join(os.path.dirname(__file__), '../public/swagger/index.html')
         with open(swagger_ui_path, 'r') as swagger_ui_file:
-            swagger_ui_content = swagger_ui_file.read()
-        return swagger_ui_content
+            return swagger_ui_file.read()
