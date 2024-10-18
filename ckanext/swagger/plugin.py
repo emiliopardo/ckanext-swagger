@@ -1,6 +1,6 @@
 from ckan.plugins import SingletonPlugin, implements, IBlueprint, IRoutes
 from ckanext.swagger.controllers.swagger import swagger_static_blueprint, swagger_dynamic_blueprint
-from ckan.lib.base import BaseController, render
+from flask import render_template
 
 class CKANSwaggerPlugin(SingletonPlugin):
     implements(IBlueprint, IRoutes)

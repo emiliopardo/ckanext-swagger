@@ -21,9 +21,9 @@ class SwaggerController:
     @swagger_dynamic_blueprint.route('/api/dynamic/swagger.json')
     def swagger_dynamic():
         try:
-            # Obtener todas las acciones de CKAN desde el mapeo de URLs
+            # Obtener todas las acciones de CKAN desde ckan.logic.action.get
             actions = {}
-            for action_name in dir(action):
+            for action_name in dir(action.get):
                 if not action_name.startswith("_"):  # Ignorar métodos privados
                     try:
                         # Obtener la función de la acción
